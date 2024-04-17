@@ -16,6 +16,8 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import LogoutConfirmationDialog from "./LogoutConfirmationDialog";
 import CustomAvatar from "./CustomAvatar";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Badge } from "@mui/material";
 
 const drawerWidth = 240;
 const navItems = [
@@ -29,7 +31,6 @@ const navItems = [
     name: "Product",
     path: "/products",
   },
-  { id: 3, name: "Contact", path: "/contact" },
 ];
 
 const Header = (props) => {
@@ -96,6 +97,16 @@ const Header = (props) => {
               </Button>
             ))}
           </Box>
+          <Badge
+            onClick={() => {
+              navigate("/cart");
+            }}
+            badgeContent={4}
+            color="primary"
+            sx={{ marginRight: "1.5rem", cursor: "pointer" }}
+          >
+            <ShoppingCartIcon />
+          </Badge>
           <CustomAvatar />
           <LogoutConfirmationDialog />
         </Toolbar>

@@ -1,6 +1,7 @@
 import About from "../components/About";
 import MainLayout from "../layout/MainLayout";
 import AddProduct from "../pages/AddProduct";
+import Cart from "../pages/Cart";
 import Contact from "../pages/Contact";
 import EditProduct from "../pages/EditProduct";
 import Home from "../pages/Home";
@@ -26,8 +27,8 @@ const mainRoutes = [
         element: <ProductList />,
       },
       {
-        path: "contact",
-        element: <Contact />,
+        path: "cart",
+        element: <Cart />,
       },
       {
         path: "add-product",

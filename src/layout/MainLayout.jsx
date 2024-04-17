@@ -12,7 +12,7 @@ const MainLayout = () => {
         flexDirection: "column",
         gap: "2rem",
         margin: "0 auto",
-        width: "100%",
+        width: "100vw",
       }}
     >
       <Header />
