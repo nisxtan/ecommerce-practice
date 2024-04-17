@@ -13,17 +13,21 @@ import {
   Typography,
 } from "@mui/material";
 import { Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import * as Yup from "yup";
 import { productCategories } from "../constant/general.constants";
 import $axios from "../library/axios.instance";
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../components/Loader";
+import axios from "axios";
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const EditProduct = () => {
   //get product details
+  const [imageLoading, setImageLoading] = useState(false);
+  const [localUrl, setLocalUrl] = useState(null);
+  const [productImage, setProductImage] = useState(null);
   const { id: productId } = useParams();
   const navigate = useNavigate();
   // const params = useParams();
@@ -93,7 +97,29 @@ const EditProduct = () => {
             .max(1000, "Description must be at max 1000 characters."),
           image: Yup.string().trim().nullable(),
         })}
-        onSubmit={(values) => {
+        onSubmit={async (values) => {
+          let imageUrl;
+          if (productImage) {
+            const cloudname = "dmjkl7ixf";
+            const data = new FormData();
+
+            data.append("file", productImage);
+            data.append("upload_preset", "nepalmart");
+            data.append("cloudname", cloudname);
+            try {
+              setImageLoading(true);
+              const res = await axios.post(
+                `https://api.cloudinary.com/v1_1/${cloudname}/upload`,
+                data
+              );
+              setImageLoading(false);
+              imageUrl = res?.data?.url;
+            } catch (error) {
+              setImageLoading(false);
+              console.log("Image upload failed");
+            }
+          }
+          values.image = imageUrl;
           mutate(values);
         }}
       >
@@ -111,7 +137,24 @@ const EditProduct = () => {
             }}
           >
             <Typography variant="h5">Edit Product</Typography>
-
+            <Stack>
+              {(localUrl || productDetails?.image) && (
+                <img
+                  src={localUrl || productDetails?.image}
+                  alt={productDetails?.name}
+                />
+              )}
+            </Stack>
+            <FormControl>
+              <input
+                type="file"
+                onChange={(event) => {
+                  const file = event?.target?.files[0];
+                  setProductImage(file);
+                  setLocalUrl(URL.createObjectURL(file));
+                }}
+              ></input>
+            </FormControl>
             <FormControl>
               <TextField label="Name" {...getFieldProps("name")} />
               {touched.name && errors.name ? (
