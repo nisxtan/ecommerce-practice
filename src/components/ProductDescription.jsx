@@ -13,12 +13,12 @@ import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate, useParams } from "react-router-dom";
 import DeleteProductDialog from "./DeleteProductDialog";
-import { isError, useMutation } from "react-query";
+import { isError, useMutation, useQueryClient } from "react-query";
 import $axios from "../library/axios.instance";
 const ProductDescription = (props) => {
   const userRole = localStorage.getItem("userRole");
   console.log(props);
-
+  const queryClient = useQueryClient();
   const [count, setCount] = useState(1);
   const navigate = useNavigate();
   const params = useParams();
@@ -47,8 +47,10 @@ const ProductDescription = (props) => {
       });
     },
     onSuccess: () => {
-      console.log("success");
+      //   console.log("s}uccess");
+      queryClient.invalidateQueries("get-cart-item-count");
     },
+
     onError: () => {
       console.log("errror");
     },

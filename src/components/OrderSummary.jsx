@@ -1,7 +1,7 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import React from "react";
 
-const OrderSummary = () => {
+const OrderSummary = ({ orderSummary }) => {
   return (
     <Box
       sx={{
@@ -17,18 +17,24 @@ const OrderSummary = () => {
       }}
     >
       <Typography variant="h5">Order Summary</Typography>
-      <Stack direction="row">
-        <Typography>Sub total</Typography>
-        <Typography>Rs. 45000</Typography>
-      </Stack>
-      <Stack direction="row">
-        <Typography>Discount:</Typography>
-        <Typography>Rs. 1500</Typography>
-      </Stack>
-      <Stack direction="row">
-        <Typography>Grand Total:</Typography>
-        <Typography>Rs. 43500</Typography>
-      </Stack>
+      {orderSummary.map((item, index) => {
+        return (
+          <Stack
+            key={index}
+            direction="row"
+            gap="1rem"
+            sx={{
+              width: "100%",
+            }}
+          >
+            <Typography sx={{ textTransform: "capitalize", textAlign: "left" }}>
+              {item?.name}
+            </Typography>
+            <Typography>Rs.{item?.value}</Typography>
+          </Stack>
+        );
+      })}
+
       <Button variant="contained" color="success">
         Procced to checkout
       </Button>
